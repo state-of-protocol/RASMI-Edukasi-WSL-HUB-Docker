@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker</title>
+  <meta name="description" content="Panduan step-by-step untuk pemula Windows setup WSL2 & Docker dengan bantuan AI-agent">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <header class="hero">
+    <h1>Edukasi WSL Hub & Docker</h1>
+    <p>Panduan langkah-demi-langkah untuk pemula Windows — setup WSL2 dan Docker dari kosong dengan bantuan AI-agent.</p>
+    <div class="hero__ai-modes">
+      <span class="hero__mode">🖥️ CLI (opencode)</span>
+      <span class="hero__mode">🌐 Web AI (ChatGPT/Gemini/Claude)</span>
+      <span class="hero__mode">📴 Offline (Ollama+Gemma)</span>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section>
+      <h2>Apa Projek Ni?</h2>
+      <p>Kebanyakan guide setup WSL2/Docker di luar sana anggap pembaca dah reti teknikal. Projek ni dibina khas untuk <strong>pemula total</strong> — orang yang baru pertama kali buka PowerShell — dan direka supaya boleh diikuti sambil dibantu AI-agent.</p>
+    </section>
+
+    <section>
+      <h2>📚 Semua Section</h2>
+      <p class="intro-text">Mula dari Section 01 kalau langsung tak pernah setup, atau terus ke mana-mana topik yang nak dipelajari.</p>
+      <div class="section-grid">
+        <article class="section-card">
+          <span class="section-card__number">01</span>
+          <h3><a href="sections/01-prasyarat.html">Prasyarat & Enable WSL</a></h3>
+          <p>Check versi Windows, enable Virtual Machine Platform, enable WSL, restart, dan BIOS virtualization.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">02</span>
+          <h3><a href="sections/02-istilah-asas.html">Istilah Asas (Glossary)</a></h3>
+          <p>WSL, distro, kernel, container, image, daemon, port, CLI — semua dijelaskan dengan analogi mudah.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">03</span>
+          <h3><a href="sections/03-wsl-setup.html">WSL2 — Setup</a></h3>
+          <p>Install WSL, setup Ubuntu, update package, dan verifikasi semuanya berjalan lancar.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">04</span>
+          <h3><a href="sections/04-wsl-manage.html">WSL2 — Pengurusan & Sesi</a></h3>
+          <p>Keluar terminal, shutdown WSL untuk bebaskan RAM, dan urus sesi Ubuntu.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">05</span>
+          <h3><a href="sections/05-docker-setup.html">Docker — Pemasangan</a></h3>
+          <p>Pasang Docker Engine dalam Ubuntu WSL2 tanpa Docker Desktop — lebih ringan dan pantas.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">06</span>
+          <h3><a href="sections/06-docker-manage.html">Docker — Urus Container</a></h3>
+          <p>Hidupkan Docker daemon, lari container Nginx, dan faham port forwarding.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">07</span>
+          <h3><a href="sections/07-docker-cleanup.html">Docker — Pembersihan</a></h3>
+          <p>Hentikan, padam container, dan prune sistem untuk jimat ruang disk.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">08</span>
+          <h3><a href="sections/08-troubleshooting.html">Masalah Lazim (Troubleshooting)</a></h3>
+          <p>Ralat biasa: daemon tak jalan, permission denied, port conflict — dan cara selesaikannya.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">09</span>
+          <h3><a href="sections/09-qa.html">Q&A</a></h3>
+          <p>Soalan-soalan lazim: kenapa guna Docker Engine instead of Docker Desktop, apa jadi container masa laptop dimatikan, dan lain-lain.</p>
+        </article>
+        <article class="section-card">
+          <span class="section-card__number">10</span>
+          <h3><a href="sections/10-quick-reference.html">Rujukan Pantas</a></h3>
+          <p>Cheat sheet semua command penting — WSL, Docker, cleanup — dalam satu halaman.</p>
+        </article>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content"><strong>Tip:</strong> Section 01 dan 02 sedang dalam pembinaan. Sementara tu, boleh terus ke Section 03 kalau dah biasa dengan konsep asas.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🚀 Cara Guna</h2>
+      <ol>
+        <li>Buka mana-mana section dari senarai di atas</li>
+        <li>Ikut turutan 01 → 10 kalau baru pertama kali, atau terus ke topik yang nak dipelajari</li>
+        <li>Setiap section ada bahagian ⚠️ Troubleshooting — kalau stuck, cari dulu di situ</li>
+        <li>Guna AI-agent (ChatGPT, Claude, Gemini, atau opencode CLI) untuk bantuan tambahan</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>🧭 Falsafah Projek</h2>
+      <ul>
+        <li><strong>Pemula dulu, teknikal kemudian</strong> — setiap istilah teknikal dijelaskan bila kali pertama disebut</li>
+        <li><strong>Faham, bukan hafal</strong> — setiap command ada penjelasan "kenapa" bukan sekadar "macam mana"</li>
+        <li><strong>Mobile-first</strong> — dioptimumkan untuk baca dari phone/Telegram</li>
+        <li><strong>AI-agent-friendly</strong> — struktur projek direka untuk AI-agent boleh sambung kerja tanpa context berulang</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="sections/10-quick-reference.html">Rujukan Pantas</a> — <a href="sections/09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="assets/js/nav.js"></script>
+</body>
+</html>

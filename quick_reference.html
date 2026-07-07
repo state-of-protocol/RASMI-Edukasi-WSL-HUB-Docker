@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ms" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSL & Docker - Rujukan Pantas</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-slate-900">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-brands fa-docker text-4xl text-cyan-400"></i>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">WSL & Docker DevNode</h1>
+                    <p class="text-xs text-slate-400">Dokumentasi Pengurusan & Selenggara Sistem</p>
+                </div>
+            </div>
+            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Aiman@RafeeHP</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Sidebar Menu -->
+        <nav class="md:col-span-1 space-y-2 sticky top-24 self-start">
+            <p class="text-xs font-semibold tracking-wider text-slate-500 uppercase px-3">Menu Rujukan</p>
+            <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 transition font-medium"><i class="fa-solid fa-house mr-2"></i> 0. Proses Mula</a>
+            <a href="wsl.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 transition font-medium"><i class="fa-solid fa-terminal mr-2"></i> 1. Pengurusan WSL2</a>
+            <a href="docker-setup.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 transition font-medium"><i class="fa-solid fa-gear mr-2"></i> 2. Setup Docker</a>
+            <a href="docker-manage.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 transition font-medium"><i class="fa-solid fa-cubes mr-2"></i> 3. Urus Container</a>
+            <a href="docker-cleanup.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 transition font-medium"><i class="fa-solid fa-trash-can mr-2"></i> 4. Pembersihan Bersih</a>
+            <a href="problems.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 transition font-medium"><i class="fa-solid fa-triangle-exclamation mr-2"></i> 5. Masalah Lazim & Solusi</a>
+            <a href="qa.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 transition font-medium"><i class="fa-solid fa-circle-question mr-2"></i> 6. Q&A</a>
+            <hr class="border-slate-800 my-2">
+            <a href="quick_reference.html" class="block px-3 py-2 rounded-lg bg-slate-800 text-cyan-400 font-medium"><i class="fa-solid fa-bolt mr-2"></i> ⚡ Rujukan Pantas (All-in-One)</a>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="md:col-span-3 space-y-8">
+            <section class="space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <h2 class="text-2xl font-bold text-slate-100 flex items-center"><i class="fa-solid fa-bolt text-cyan-400 mr-2"></i> Rujukan Pantas Arahan Perintah (Cheat Sheet)</h2>
+                    <span class="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded">Salinan 1-Klik</span>
+                </div>
+                <p class="text-slate-400 text-sm">Satu halaman ringkas yang menggabungkan semua sintaks harian penting. Pastikan anda melihat label persekitaran (<span class="text-purple-400 font-semibold">PowerShell</span> / <span class="text-emerald-400 font-semibold">WSL Ubuntu</span>) sebelum menyalin.</p>
+                
+                <div class="grid grid-cols-1 gap-4">
+                    
+                    <!-- Kategori 1: Windows & WSL Management -->
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center"><i class="fa-solid fa-square-terminal mr-2"></i> Kawalan Hos Windows & Sesi WSL</h3>
+                        
+                        <div class="space-y-2">
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Semak status pemasangan & versi WSL (Windows PowerShell)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">wsl --status</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Log masuk ke distro lalai (Windows PowerShell)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">wsl -d Ubuntu</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Matikan semua sesi Linux untuk bersihkan RAM (Windows PowerShell)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">wsl --shutdown</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kategori 2: Docker Engine Services -->
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center"><i class="fa-brands fa-docker mr-2"></i> Pengendalian Daemon & Servis Docker</h3>
+                        
+                        <div class="space-y-2">
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Aktifkan servis latar belakang Docker Engine (WSL Ubuntu)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">sudo service docker start</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Semak status kesihatan semasa servis Docker (WSL Ubuntu)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">sudo service docker status</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kategori 3: Container Operations -->
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center"><i class="fa-solid fa-cubes mr-2"></i> Pengurusan Harian Kontena (Container Operations)</h3>
+                        
+                        <div class="space-y-2">
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Luncurkan pelayan Nginx baharu di latar belakang (Port 8080)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">docker run -d -p 8080:80 --name web-node nginx</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Lihat senarai kontena yang sedang AKTIF sahaja</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">docker ps</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Lihat SEMUA senarai kontena (Aktif & Berhenti)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">docker ps -a</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kategori 4: Housekeeping & Cleanup -->
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="text-xs font-bold text-amber-500 uppercase tracking-wider flex items-center"><i class="fa-solid fa-broom mr-2"></i> Pembersihan Storan & Sisa Sistem</h3>
+                        
+                        <div class="space-y-2">
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Hentikan kontena secara selamat</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">docker stop web-node</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Padam kontena secara paksa (Force Delete)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">docker rm -f web-node</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="relative group bg-slate-900/50 p-2.5 rounded border border-slate-800/60">
+                                <span class="text-[11px] text-slate-500 block">Nuke/Padam total semua cache imej, volume, & rangkaian tidak aktif (Bebaskan NVMe Disk)</span>
+                                <code class="text-slate-200 font-mono text-xs block mt-0.5">docker system prune -a --volumes -f</code>
+                                <button onclick="copyCode(this)" class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-[10px] transition"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 mt-20 bg-slate-950 text-slate-500 py-6 text-center text-xs">
+        <p>© 2026 SysMonitor Dev Guide. Ditulis untuk pengurusan pantas WSL & Docker Engine.</p>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const container = button.parentElement;
+            const codeEl = container.querySelector('code');
+            navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                const origHTML = button.innerHTML;
+                button.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i>';
+                setTimeout(() => { button.innerHTML = origHTML; }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>

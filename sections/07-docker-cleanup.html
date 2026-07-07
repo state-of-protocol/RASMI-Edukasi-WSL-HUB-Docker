@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 07 Docker Pembersihan</title>
+  <meta name="description" content="Cara hentikan container, padam paksa, dan prune sistem Docker untuk jimat ruang disk NVMe.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">07</span> Docker — Pembersihan</h1>
+      <p>Apabila projek selesai, bersihkan container dan sistem storan agar cakera NVMe tidak dipenuhi cache.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Kandungan Section Ini</p>
+      <ol>
+        <li><a href="#hentikan">Hentikan Server Berjalan</a></li>
+        <li><a href="#padam">Padam Container Secara Paksa</a></li>
+        <li><a href="#prune">Padam Bersih Semua Cache & Imej Tak Digunakan</a></li>
+      </ol>
+    </div>
+
+    <section id="hentikan">
+      <h2>1. Hentikan Server Berjalan</h2>
+      <p>Sebelum padam container, pastikan ia dihentikan dengan selamat. Guna command ni untuk hentikan container tanpa memadamkannya — container masih boleh dihidupkan semula nanti.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <pre><code>docker stop nama-container</code></pre>
+      </div>
+    </section>
+
+    <section id="padam">
+      <h2>2. Padam Container Secara Paksa</h2>
+      <p>Kalau nak padam container terus (tak perlu simpan), guna command ni. Flag <code>-f</code> bermaksud "force" — dia akan padam walaupun container masih berjalan.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <pre><code>docker rm -f nama-container</code></pre>
+      </div>
+
+      <p>Gantikan <code>nama-container</code> dengan nama container yang hendak dipadam. Contoh: <code>docker rm -f web-node</code>.</p>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Amaran:</strong> <code>docker rm -f</code> akan padam container secara kekal — data di dalamnya akan hilang melainkan anda guna volume yang dipasang (mounted volume) dari luar container.
+        </div>
+      </div>
+    </section>
+
+    <section id="prune">
+      <h2>3. Padam Bersih Semua Cache, Imej & Volume Tak Digunakan</h2>
+      <p>Lepas selesai semua projek, jalankan command ni untuk bersihkan keseluruhan sistem Docker — imej yang tak guna, container lama, volume terbiar, dan network cache. Ini sangat membantu untuk jimatkan ruang disk NVMe.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <pre><code>docker system prune -a --volumes -f</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Tip:</strong> Command ni gabungan flag:
+          <ul style="margin-top: var(--space-2);">
+            <li><code>-a</code> — padam <strong>semua</strong> imej tak guna (termasuk yang gantung/dangling)</li>
+            <li><code>--volumes</code> — padam juga volume yang tak dipakai oleh mana-mana container</li>
+            <li><code>-f</code> — force, jangan tanya confirm (skip prompt)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Amaran:</strong> Command ni <strong>tidak boleh undo</strong>. Pastikan anda dah backup apa-apa data penting sebelum jalan. Volume yang dipadam akan hilang selama-lamanya.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>rm: cannot remove — container masih running</strong>
+          <p>Kalau <code>docker rm</code> tanpa <code>-f</code> gagal, maknanya container masih berjalan. Guna <code>docker stop nama-container</code> dulu, atau tambah flag <code>-f</code> untuk force remove.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>docker: permission denied</strong>
+          <p>Kalau nampak mesej ini, bermakna user anda belum ditambah ke group docker. Rujuk <a href="08-troubleshooting.html">Troubleshooting</a> untuk penyelesaian.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="06-docker-manage.html" class="section-nav__prev">← 06 Urus Container</a>
+      <a href="08-troubleshooting.html" class="section-nav__next">08 Troubleshooting →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

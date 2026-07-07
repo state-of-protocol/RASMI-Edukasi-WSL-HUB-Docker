@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 02 Istilah Asas (Glossary)</title>
+  <meta name="description" content="Glossary istilah penting: WSL, distro, kernel, container, image, daemon, port, CLI — semua dijelaskan dengan analogi mudah untuk pemula.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">02</span> Istilah Asas (Glossary)</h1>
+      <p>Dalam dunia WSL dan Docker, banyak istilah teknikal yang mungkin bunyi asing. Section ni terangkan setiap istilah dengan bahasa mudah dan analogi, supaya anda faham konsep — bukan sekadar hafal command.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Istilah dalam Section Ini</p>
+      <ol>
+        <li><a href="#wsl">WSL (Windows Subsystem for Linux)</a></li>
+        <li><a href="#distro">Distro (Distribution)</a></li>
+        <li><a href="#kernel">Kernel</a></li>
+        <li><a href="#container">Container</a></li>
+        <li><a href="#image">Image</a></li>
+        <li><a href="#daemon">Daemon</a></li>
+        <li><a href="#port">Port</a></li>
+        <li><a href="#cli">CLI / Terminal</a></li>
+      </ol>
+    </div>
+
+    <section id="wsl">
+      <h2>WSL — Windows Subsystem for Linux</h2>
+
+      <p><dfn class="glossary-term">WSL</dfn> (Windows Subsystem for Linux) adalah ciri Windows yang membolehkan anda <strong>jalan Linux dalam Windows</strong> tanpa perlu <em>dual-boot</em> atau mesin maya yang berat.</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Analogi:</strong> Bayangkan Windows adalah sebuah rumah, dan Linux adalah sebuah bilik khas dalam rumah tu. Dengan WSL, anda boleh masuk ke bilik Linux tu, guna semua alat Linux, dan bila selesai, tutup pintu — tanpa perlu rumah lain (mesin maya) atau pindah rumah (dual-boot). Bilik ni guna electricity rumah yang sama — sebab tu WSL sangat ringan pada RAM.
+        </div>
+      </div>
+
+      <p><strong>Ada dua versi WSL:</strong></p>
+      <ul>
+        <li><strong>WSL 1:</strong> Versi lama — translate system calls Linux kepada Windows. Cepat tapi tak semua app Linux boleh jalan.</li>
+        <li><strong>WSL 2:</strong> Versi baru (disarankan) — guna kernel Linux sebenar dalam mesin maya ringan. Lebih serasi dengan Docker dan app Linux lain.</li>
+      </ul>
+    </section>
+
+    <section id="distro">
+      <h2>Distro — Distribution (Edaran Linux)</h2>
+
+      <p><dfn class="glossary-term">Distro</dfn> (singkatan untuk distribution) adalah <strong>"perisa" Linux yang berbeza</strong>. Sama macam ada pelbagai jenis minuman kopi — americano, latte, cappuccino — semuanya kopi, tapi cara penyediaan dan rasanya lain. Linux pun macam tu: semua guna kernel yang sama, tapi cara dia dibungkus dan alat-alat yang disertakan berbeza.</p>
+
+      <p><strong>Contoh distro popular:</strong></p>
+      <ul>
+        <li><strong>Ubuntu</strong> — paling mesra pemula, banyak tutorial online. Ini yang akan kita guna dalam panduan ni.</li>
+        <li><strong>Debian</strong> — stabil, ringan. Sesuai untuk server.</li>
+        <li><strong>Fedora</strong> — sentiasa ada teknologi terkini.</li>
+        <li><strong>Alpine</strong> — sangat kecil (saiz MB, bukan GB). Popular untuk container Docker.</li>
+      </ul>
+
+      <p>Dalam WSL, anda boleh install beberapa distro serentak dan bertukar antara mereka. Tapi untuk pemula, cukup guna Ubuntu dulu.</p>
+    </section>
+
+    <section id="kernel">
+      <h2>Kernel — Bahagian Teras Sistem Operasi</h2>
+
+      <p><dfn class="glossary-term">Kernel</dfn> adalah <strong>"otak" sistem operasi</strong>. Dia yang uruskan komunikasi antara hardware (CPU, RAM, disk) dan software (app yang anda guna).</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Analogi:</strong> Kernel macam pelayan restoran. Bila anda (app) nak air (data), anda cakap dengan pelayan. Pelayan pergilah ke dapur (hardware), ambil air, dan bawa balik kepada anda. Anda tak perlu tahu apa jadi di dapur — pelayan yang uruskan semua.
+        </div>
+      </div>
+
+      <p>Dalam WSL 2, Microsoft guna kernel Linux sebenar yang telah diubah suai sedikit untuk jalan dalam Windows. Kernel ni diupdate secara automatik melalui Windows Update.</p>
+    </section>
+
+    <section id="container">
+      <h2>Container — Kotak Ringan untuk App</h2>
+
+      <p><dfn class="glossary-term">Container</dfn> adalah <strong>"kotak" yang mengandungi app anda + semua yang app tu perlukan</strong> untuk jalan (library, configuration, dependencies).</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Analogi:</strong> Container macam <strong>bekas Tupperware yang berisi makanan lengkap</strong>. Bekas tu ada makanan, sudu, serbet — semuanya sekali. Bila nak makan, buka bekas, siap. Tak perlu cari pinggan, tak perlu susun. Bila habis, tutup balik dan simpan. Tak ada kesan — sebab semuanya dalam bekas tu saja. Container dalam Docker pun sama: app + semua keperluannya dalam satu bekas.
+        </div>
+      </div>
+
+      <p><strong>Beza dengan mesin maya (VM):</strong> Container jauh lebih ringan sebab dia <strong>kongsi kernel</strong> dengan tuan rumah, bukan jalan OS penuh sendiri. Sebab tu container boleh mula dalam saat, bukan minit.</p>
+    </section>
+
+    <section id="image">
+      <h2>Image — Blueprint untuk Container</h2>
+
+      <p><dfn class="glossary-term">Image</dfn> adalah <strong>"cetak biru" (blueprint) untuk container</strong>. Kalau container adalah rumah yang sudah siap, image adalah pelan rumah — belum siap, tapi mengandungi semua arahan untuk bina rumah tu.</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Analogi:</strong> Image macam <strong>resepi kek</strong>. Resepi tu tak boleh dimakan (sebab tulisan di atas kertas), tapi guna resepi tu anda boleh buat banyak kek (container) yang sama. Dalam Docker, image adalah resepi, dan container adalah kek yang dah siap.
+        </div>
+      </div>
+
+      <p>Anda boleh <strong>download image orang lain</strong> dari <a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a> (macam kedai resepi online), atau <strong>bina image sendiri</strong> guna Dockerfile.</p>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Checkpoint:</strong> Ingat: <code>docker pull</code> = muat turun resepi (image). <code>docker run</code> = guna resepi untuk buat kek (container).
+        </div>
+      </div>
+    </section>
+
+    <section id="daemon">
+      <h2>Daemon — Servis Latar Belakang</h2>
+
+      <p><dfn class="glossary-term">Daemon</dfn> (sebut: "de-mon") adalah <strong>program yang jalan di latar belakang</strong>, tanpa perlu anda buka tetingkap atau berinteraksi langsung.</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Analogi:</strong> Daemon macam <strong>penjaga malam di bangunan</strong>. Dia duduk di kaunter depan, 24 jam, tunggu orang datang. Bila ada tetamu (app), dia sambut dan uruskan. Bila takde tetamu, dia diam — tapi tetap bersedia. Docker daemon pun sama: dia tunggu arahan docker (contoh: <code>docker run</code>), dan dia akan laksanakan.
+        </div>
+      </div>
+
+      <p>Dalam setup kita, daemon Docker dipanggil <code>dockerd</code>. Setiap kali lepas restart laptop, anda kena hidupkan daemon ni dengan <code>sudo service docker start</code> sebelum guna Docker.</p>
+    </section>
+
+    <section id="port">
+      <h2>Port — Pintu untuk Data</h2>
+
+      <p><dfn class="glossary-term">Port</dfn> adalah <strong>"pintu" maya pada komputer</strong> yang membenarkan data masuk dan keluar.</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Analogi:</strong> Bayangkan komputer anda adalah <strong>sebuah apartmen bertingkat</strong>. Alamat IP adalah alamat apartmen tu (contoh: 123, Jalan SS2). Tapi dalam apartmen tu ada banyak unit — unit 80 untuk web, unit 22 untuk SSH, unit 5432 untuk database. <strong>Nombor port adalah nombor unit apartmen.</strong> Bila anda tak suruh container guna port 8080, anda sebenarnya kata: "Buka unit 8080 untuk container ni".
+        </div>
+      </div>
+
+      <p><strong>Port biasa yang penting:</strong></p>
+      <ul>
+        <li><strong>80</strong> — Web (HTTP) — lalai untuk laman web</li>
+        <li><strong>443</strong> — Web secure (HTTPS)</li>
+        <li><strong>22</strong> — SSH (remote access)</li>
+        <li><strong>5432</strong> — PostgreSQL database</li>
+        <li><strong>8080</strong> — Port alternatif untuk web (selalu guna untuk testing)</li>
+      </ul>
+
+      <p>Dalam Docker, <code>-p 8080:80</code> maksudnya "Buka pintu 8080 di komputer saya, sambung ke pintu 80 dalam container".</p>
+    </section>
+
+    <section id="cli">
+      <h2>CLI / Terminal — Cakap dengan Komputer Guna Teks</h2>
+
+      <p><dfn class="glossary-term">CLI</dfn> (Command Line Interface) atau <strong>terminal</strong> adalah cara berinteraksi dengan komputer <strong>dengan menaip arahan teks</strong>, bukan klik ikon atau butang.</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Analogi:</strong> Kalau GUI (graphical interface) macam <strong>memandu kereta automatik</strong> — senang, semua ada butang, tapi terhad. CLI pula macam <strong>memandu kereta manual</strong> — nampak susah pada mulanya, tapi lepas biasa, anda boleh buat lebih banyak benda dengan lebih pantas. Anda cakap terus pada enjin, tanpa tunggu GUI.
+        </div>
+      </div>
+
+      <p><strong>Dua terminal yang anda akan guna:</strong></p>
+      <ul>
+        <li><span class="tag-powershell">PowerShell</span> — terminal Windows. Guna untuk command berkaitan Windows dan WSL.</li>
+        <li><span class="tag-wsl">WSL Ubuntu</span> — terminal Linux dalam WSL. Guna untuk command Linux dan Docker.</li>
+      </ul>
+
+      <p>Jangan risau kalau nampak banyak command — panduan ni akan bagi <strong>setiap command dengan penjelasan</strong> apa dia buat. Anda tak perlu hafal, cukup faham konsep.</p>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Checkpoint:</strong> Ingat: PowerShell = command untuk urus Windows/WSL. WSL Ubuntu = command untuk urus Docker dan app Linux. Jangan campur aduk — nanti command tak jalan!
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>Masih keliru dengan istilah-istilah ni?</strong>
+          <p>Tak pe — istilah ni akan disebut berulang kali dalam section-section seterusnya, setiap kali dengan konteks dan contoh. Lepas guna WSL dan Docker beberapa kali, semua istilah ni akan jadi biasa. Kalau nak rujuk cepat, bookmark section ni dan balik bila perlu.</p>
+           <p>Rujuk juga <a href="10-quick-reference.html">Rujukan Pantas</a> untuk cheat sheet command.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="01-prasyarat.html" class="section-nav__prev">← 01 Prasyarat</a>
+      <a href="03-wsl-setup.html" class="section-nav__next">03 WSL2 Setup →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ms" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker - Pemasangan</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased">
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-brands fa-docker text-4xl text-cyan-400"></i>
+                <h1 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">WSL & Docker DevNode</h1>
+            </div>
+            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Aiman@RafeeHP</span>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <nav class="md:col-span-1 space-y-2 sticky top-24 self-start">
+            <p class="text-xs font-semibold tracking-wider text-slate-500 uppercase px-3">Menu Rujukan</p>
+            <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-medium"><i class="fa-solid fa-house mr-2"></i> 0. Proses Mula</a>
+            <a href="wsl.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-medium"><i class="fa-solid fa-terminal mr-2"></i> 1. Pengurusan WSL2</a>
+            <a href="docker-setup.html" class="block px-3 py-2 rounded-lg bg-slate-800 text-cyan-400 font-medium"><i class="fa-solid fa-gear mr-2"></i> 2. Setup Docker</a>
+            <a href="docker-manage.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-cyan-400 transition font-medium"><i class="fa-solid fa-cubes mr-2"></i> 3. Urus Container</a>
+            <a href="docker-cleanup.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-cyan-400 transition font-medium"><i class="fa-solid fa-trash-can mr-2"></i> 4. Pembersihan Bersih</a>
+        </nav>
+
+        <div class="md:col-span-3 space-y-12">
+            <section class="space-y-4">
+                <h2 class="text-2xl font-bold text-slate-100 flex items-center border-b border-slate-800 pb-2"><span class="text-cyan-400 mr-2">02.</span> Pemasangan Enjin Docker</h2>
+                <p class="text-slate-400 text-sm">Langkah rasmi memasang Docker Engine di Ubuntu WSL2 tanpa memerlukan aplikasi berat Windows Docker Desktop.</p>
+                
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 relative group">
+                    <span class="text-xs font-semibold text-slate-500 block mb-1">Skrip Penuh Pemasangan GPG & Repositori (Dalam WSL)</span>
+                    <pre class="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre-wrap">sudo apt update && sudo apt upgrade -y
+sudo apt install -y ca-certificates curl gnupg lsb-release
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</pre>
+                    <button onclick="copyCode(this)" class="absolute right-3 top-3 bg-slate-800 text-slate-400 p-1.5 rounded text-xs"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 relative group">
+                    <span class="text-xs font-semibold text-slate-500 block mb-1">Kebenaran Akses Bukan-Root (Tanpa Sudo)</span>
+                    <code class="text-emerald-400 font-mono block text-sm">sudo usermod -aG docker $USER</code>
+                    <button onclick="copyCode(this)" class="absolute right-3 top-3 opacity-0 group-hover:opacity-100 bg-slate-800 text-slate-400 p-1.5 rounded text-xs"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>function copyCode(b){const c=b.parentElement;const e=c.querySelector('code')||c.querySelector('pre');navigator.clipboard.writeText(e.innerText).then(()=>{const o=b.innerHTML;b.innerHTML='<i class="fa-solid fa-check text-emerald-400"></i> Copied!';setTimeout(()=>{b.innerHTML=o},2000)})}</script>
+</body>
+</html>

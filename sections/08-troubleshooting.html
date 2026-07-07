@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 08 Troubleshooting</title>
+  <meta name="description" content="Panduan menyelesaikan masalah lazim Docker dalam WSL2: daemon tak jalan, permission denied, port conflict, dan cara selesaikannya.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">08</span> Masalah Lazim (Troubleshooting)</h1>
+      <p>Panduan menyelesaikan ralat diagnostik yang kerap ditemui semasa mengendalikan Docker Engine di atas WSL2.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Isu dalam Section Ini</p>
+      <ol>
+        <li><a href="#isu-1">Docker daemon tidak berjalan</a></li>
+        <li><a href="#isu-2">Sekatan kebenaran akses (Permission Denied)</a></li>
+        <li><a href="#isu-3">Konflik Port (Port Already Allocated)</a></li>
+      </ol>
+    </div>
+
+    <section id="isu-1">
+      <h2>❌ Isu 1: Docker daemon tidak berjalan</h2>
+
+      <p><strong>Ralat yang muncul:</strong></p>
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <pre><code>Cannot connect to the Docker daemon at unix:///var/run/docker.sock</code></pre>
+      </div>
+      <p>Ralat ni bermakna Docker daemon (servis latar belakang) belum dihidupkan. Ini biasa berlaku selepas restart laptop — WSL tidak automatically start Docker daemon.</p>
+
+      <p><strong>Penyelesaian (Jalankan dalam WSL Ubuntu):</strong></p>
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <pre><code>sudo service docker start</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Tip:</strong> Lepas jalan command ni, semak dengan <code>sudo service docker status</code> untuk pastikan ia sudah berjalan. Output sepatutnya "docker is running".
+        </div>
+      </div>
+    </section>
+
+    <section id="isu-2">
+      <h2>❌ Isu 2: Sekatan kebenaran akses (Permission Denied)</h2>
+
+      <p><strong>Ralat yang muncul:</strong></p>
+      <p>Anda terpaksa menaip <code>sudo</code> di hadapan setiap command docker. Contoh: <code>sudo docker ps</code> bukannya <code>docker ps</code>.</p>
+
+      <p><strong>Punca:</strong> User anda belum ditambah ke group <code>docker</code>. Docker daemon hanya boleh diakses oleh user dalam group docker atau root.</p>
+
+      <p><strong>Penyelesaian (Daftar group dan restart terminal):</strong></p>
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <pre><code>sudo usermod -aG docker $USER</code></pre>
+      </div>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Amaran:</strong> Lepas jalankan command ni, anda perlu <strong>log out dan log in semula</strong> (atau restart WSL terminal) untuk perubahan group berkuat kuasa. Kalau tak, anda masih akan nampak permission denied.
+        </div>
+      </div>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Checkpoint:</strong> Lepas restart terminal, cuba <code>docker ps</code> tanpa <code>sudo</code>. Kalau tak keluar ralat, penyelesaian berjaya!
+        </div>
+      </div>
+    </section>
+
+    <section id="isu-3">
+      <h2>❌ Isu 3: Konflik Port (Port Already Allocated)</h2>
+
+      <p><strong>Ralat yang muncul:</strong></p>
+      <p>Port hantaran (contoh: <code>8080</code>) telah digunakan oleh tugasan atau kontena lain. Biasanya berlaku bila anda cuba <code>docker run -p 8080:80</code> tapi port 8080 sudah dipakai.</p>
+
+      <p><strong>Sebab:</strong> Setiap port pada komputer Windows hanya boleh digunakan oleh satu proses pada satu masa. Kalau container lama masih guna port 8080, container baru tak boleh guna port yang sama.</p>
+
+      <p><strong>Penyelesaian (Tukar port hos bahagian hadapan ketika meluncurkan kontena):</strong></p>
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <pre><code>docker run -d -p 8081:80 --name web-node-baru nginx</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Tip:</strong> Guna port lain macam <code>8081</code>, <code>8082</code>, atau <code>3000</code>. Apa-apa port yang free. Atau hentikan container lama dulu: <code>docker stop web-node</code> dan <code>docker rm web-node</code>, baru guna port 8080 balik.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting Tambahan</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>Masih bermasalah?</strong>
+          <p>Rujuk <a href="07-docker-cleanup.html">Section 07 — Pembersihan</a> untuk guna <code>docker system prune</code> jika port conflict melibatkan container lama. Atau rujuk <a href="09-qa.html">Section 09 — Q&A</a> untuk pemahaman asas.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="07-docker-cleanup.html" class="section-nav__prev">← 07 Pembersihan</a>
+      <a href="09-qa.html" class="section-nav__next">09 Q&A →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 04 WSL2 Pengurusan</title>
+  <meta name="description" content="Arahan asas untuk mengawal sesi terminal Ubuntu dan penutupan sistem bagi menjimatkan memori RAM.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">04</span> WSL2 — Pengurusan & Sesi</h1>
+      <p>Arahan asas untuk mengawal sesi terminal Ubuntu dan penutupan sistem bagi menjimatkan memori RAM.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Kandungan Section Ini</p>
+      <ol>
+        <li><a href="#exit">Keluar Terminal (Pintu Sahaja)</a></li>
+        <li><a href="#shutdown">Matikan Seluruh WSL & Bebaskan RAM</a></li>
+      </ol>
+    </div>
+
+    <section id="exit">
+      <h2>1. Keluar Terminal (Pintu Sahaja)</h2>
+      <p>Command ni adalah cara paling asas untuk <strong>keluar dari sesi terminal WSL Ubuntu</strong> semasa. Ia hanya menutup terminal — proses WSL dan Ubuntu tetap berjalan di latar belakang.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>exit</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Beza exit vs tutup window:</strong> Bila taip <code>exit</code>, anda keluar secara sopan — shell ditutup dengan betul, dan sebarang proses latar belakang yang masih hidup diberitahu. Kalau hanya tutup window terminal (klik X), proses mungkin tidak ditutup dengan sempurna.
+        </div>
+      </div>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Ingat:</strong> <code>exit</code> hanya tutup terminal. WSL Ubuntu masih berjalan dan menggunakan RAM. Kalau nak bebaskan RAM sepenuhnya, gunakan <code>wsl --shutdown</code> (langkah seterusnya).
+        </div>
+      </div>
+    </section>
+
+    <section id="shutdown">
+      <h2>2. Matikan Seluruh WSL & Bebaskan RAM</h2>
+      <p>Command ni <strong>mematikan keseluruhan mesin WSL</strong> — semua distro (Ubuntu, dan lain-lain) akan dihentikan serta-merta. Ini akan membebaskan RAM yang digunakan oleh WSL.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-powershell">PowerShell</span>
+        <pre><code>wsl --shutdown</code></pre>
+      </div>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Amaran:</strong> <code>wsl --shutdown</code> akan menghentikan SEMUA distro WSL secara paksa. Simpan kerja anda dalam WSL sebelum jalankan command ni. Selepas shutdown, anda perlu buka semula Ubuntu (Start Menu atau <code>wsl</code>) dan jalankan <code>sudo service docker start</code> jika guna Docker.
+        </div>
+      </div>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Bila nak guna?</strong> Gunakan <code>wsl --shutdown</code> bila:
+          <ul style="margin-top: var(--space-2);">
+            <li>Nak bebaskan RAM untuk aplikasi berat (contoh: gaming, video editing)</li>
+            <li>Nak reset WSL yang bermasalah (container tak boleh stop, network issue)</li>
+            <li>Lepas selesai guna WSL untuk hari itu</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>wsl --shutdown: The term 'wsl' is not recognized</strong>
+          <p>Ini bermakna anda menjalankan command dalam terminal WSL Ubuntu, bukan PowerShell. <code>wsl</code> hanya boleh dijalankan dalam <span class="tag-powershell">PowerShell</span> atau Command Prompt Windows. Buka PowerShell dan cuba semula.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>Lepas shutdown, container Docker hilang atau tak boleh start</strong>
+          <p>Ini normal. Docker daemon dimatikan bersama WSL. Buka semula Ubuntu, kemudian jalankan <code>sudo service docker start</code> untuk hidupkan semula daemon Docker. Container anda masih ada — guna <code>docker start nama-container</code> untuk hidupkan semula.</p>
+          <p>Rujuk <a href="06-docker-manage.html">Section 06 — Urus Container</a> untuk panduan lanjut.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="03-wsl-setup.html" class="section-nav__prev">← 03 WSL2 Setup</a>
+      <a href="05-docker-setup.html" class="section-nav__next">05 Docker Pemasangan →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

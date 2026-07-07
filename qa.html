@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ms" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker & WSL - Q&A</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-slate-900">
+
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-brands fa-docker text-4xl text-cyan-400"></i>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">WSL & Docker DevNode</h1>
+                    <p class="text-xs text-slate-400">Dokumentasi Pengurusan & Selenggara Sistem</p>
+                </div>
+            </div>
+            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Aiman@RafeeHP</span>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <nav class="md:col-span-1 space-y-2 sticky top-24 self-start">
+            <p class="text-xs font-semibold tracking-wider text-slate-500 uppercase px-3">Menu Rujukan</p>
+            <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-medium"><i class="fa-solid fa-house mr-2"></i> 0. Proses Mula</a>
+            <a href="wsl.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-medium"><i class="fa-solid fa-terminal mr-2"></i> 1. Pengurusan WSL2</a>
+            <a href="docker-setup.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-medium"><i class="fa-solid fa-gear mr-2"></i> 2. Setup Docker</a>
+            <a href="docker-manage.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-medium"><i class="fa-solid fa-cubes mr-2"></i> 3. Urus Container</a>
+            <a href="docker-cleanup.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-medium"><i class="fa-solid fa-trash-can mr-2"></i> 4. Pembersihan Bersih</a>
+            <a href="problems.html" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-medium"><i class="fa-solid fa-triangle-exclamation mr-2"></i> 5. Masalah Lazim & Solusi</a>
+            <a href="qa.html" class="block px-3 py-2 rounded-lg bg-slate-800 text-cyan-400 font-medium"><i class="fa-solid fa-circle-question mr-2"></i> 6. Q&A</a>
+        </nav>
+
+        <div class="md:col-span-3 space-y-8">
+            <section class="space-y-4">
+                <h2 class="text-2xl font-bold text-slate-100 flex items-center border-b border-slate-800 pb-2"><span class="text-cyan-400 mr-2">06.</span> Soalan & Jawapan (Q&A)</h2>
+                <p class="text-slate-400 text-sm">Fahami logik pengendalian sistem dan struktur hos bagi pemantapan teori pembangunan.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-2">
+                        <h3 class="text-sm font-semibold text-cyan-400 flex items-start"><span class="mr-2">Q:</span> Mengapa kita memasang Docker terus di dalam Ubuntu WSL berbanding menggunakan aplikasi Windows Docker Desktop?</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed border-l border-slate-700 pl-3"><span class="text-emerald-400 font-semibold">A:</span> Memasang terus di dalam WSL jauh lebih ringan kerana ia tidak memuatkan aplikasi antaramuka (GUI) Windows yang berat. Ini menjimatkan penggunaan RAM sistem laptop secara drastik serta memberikan kelajuan prestasi penulisan disk I/O yang hampir sama seperti pelayan Linux sebenar.</p>
+                    </div>
+
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-2">
+                        <h3 class="text-sm font-semibold text-cyan-400 flex items-start"><span class="mr-2">Q:</span> Adakah kontena akan terpadam secara automatik jika saya menutup terminal Ubuntu atau mematikan laptop?</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed border-l border-slate-700 pl-3"><span class="text-emerald-400 font-semibold">A:</span> Tidak. Kontena tersebut hanya akan bertukar status kepada ditutup (Stopped). Apabila anda membuka semula terminal dan menghidupkan servis Docker daemon, anda boleh menjalankan arahan <code class="text-cyan-400 font-mono">docker start nama-container</code> untuk menyambung semula kerja tanpa kehilangan data.</p>
+                    </div>
+
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-2">
+                        <h3 class="text-sm font-semibold text-cyan-400 flex items-start"><span class="mr-2">Q:</span> Bagaimana sistem Windows boleh mengakses `localhost:8080` sedangkan kontena dijalankan di dalam subsystem Linux?</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed border-l border-slate-700 pl-3"><span class="text-emerald-400 font-semibold">A:</span> Ini dibantu oleh ciri auto-mapping (Port Forwarding) binaan dalam WSL2. Sistem WSL2 secara automatik memetakan sebarang port rangkaian pelayan yang diaktifkan di dalam Linux terus ke antara muka rangkaian localhost Windows hos anda.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 mt-20 bg-slate-950 text-slate-500 py-6 text-center text-xs">
+        <p>© 2026 SysMonitor Dev Guide. Ditulis untuk pengurusan pantas WSL & Docker Engine.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 01 Prasyarat & Enable WSL</title>
+  <meta name="description" content="Langkah pertama sebelum setup WSL2: check versi Windows, enable Virtual Machine Platform dan WSL, restart, dan semak virtualization BIOS.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">01</span> Prasyarat & Enable WSL</h1>
+      <p>Sebelum boleh guna WSL2 atau Docker, pastikan komputer anda sudah memenuhi syarat minimum. Section ni akan bimbing anda langkah demi langkah.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Kandungan Section Ini</p>
+      <ol>
+        <li><a href="#check-windows">Semak Versi & Build Windows</a></li>
+        <li><a href="#enable-features">Enable Virtual Machine Platform & WSL</a></li>
+        <li><a href="#install-wsl">Install WSL dengan Satu Command</a></li>
+        <li><a href="#restart">Restart Komputer</a></li>
+        <li><a href="#bios-virtualization">Semak & Enable Virtualization dalam BIOS</a></li>
+      </ol>
+    </div>
+
+    <section id="check-windows">
+      <h2>1. Semak Versi & Build Windows</h2>
+      <p>WSL2 memerlukan Windows 10 versi 2004 (build 19041) atau lebih baru, atau mana-mana versi Windows 11. Jom semak dulu versi Windows komputer anda.</p>
+
+      <div class="step-list">
+        <div class="step">
+          <h3>Guna Command winver (Paling Mudah)</h3>
+          <p>Tekan <kbd>Win</kbd> + <kbd>R</kbd> pada keyboard, taip <strong>winver</strong>, dan tekan Enter. Satu kotak dialog akan muncul — cari baris yang tulis "Version" atau "Versi".</p>
+          <p><strong>Apa yang perlu dilihat:</strong> Pastikan version adalah <strong>2004 atau lebih baru</strong> (contoh: 21H2, 22H2) atau mana-mana version Windows 11. OS Build pula perlu <strong>19041 atau lebih tinggi</strong>.</p>
+          <!-- TODO: Tambah screenshot winver dialog -->
+          <div class="screenshot-placeholder">
+            <p>🖼️ Screenshot: Kotak dialog winver — tunjuk Windows 10 Version 22H2, Build 19045</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>Guna Settings (GUI)</h3>
+          <ol>
+            <li>Buka <strong>Settings</strong> (tekan <kbd>Win</kbd> + <kbd>I</kbd>)</li>
+            <li>Pergi ke <strong>System</strong> → <strong>About</strong></li>
+            <li>Di bawah "Windows specifications", cari <strong>Edition</strong>, <strong>Version</strong>, dan <strong>OS Build</strong></li>
+          </ol>
+        </div>
+
+        <div class="step">
+          <h3>Guna PowerShell (Alternatif)</h3>
+          <p>Buka PowerShell dan taip command ni untuk tengah versi dengan lebih detail.</p>
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <pre><code>(Get-CimInstance Win32_OperatingSystem).Caption</code></pre>
+          </div>
+          <p>Command ni akan tunjuk nama penuh Windows (contoh: "Microsoft Windows 10 Pro").</p>
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <pre><code>(Get-CimInstance Win32_OperatingSystem).BuildNumber</code></pre>
+          </div>
+          <p>Ini tunjuk nombor build. Jika <strong>19041 atau lebih</strong>, anda boleh guna command <code>wsl --install</code> terus.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Checkpoint:</strong> Kalau anda nampak version 2004+ dan build 19041+, komputer anda sudah boleh jalan WSL2. Terus ke langkah 2.
+        </div>
+      </div>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Amaran:</strong> Kalau version Windows anda lebih lama dari 2004 (contoh: 1909 atau 1809), anda perlu update Windows dulu melalui Windows Update. WSL2 tidak akan berfungsi pada build yang terlalu lama.
+        </div>
+      </div>
+    </section>
+
+    <section id="enable-features">
+      <h2>2. Enable Virtual Machine Platform & Windows Subsystem for Linux</h2>
+      <p>WSL2 perlukan dua komponen Windows yang perlu diaktifkan: <strong>Virtual Machine Platform</strong> dan <strong>Windows Subsystem for Linux</strong>. Ada dua cara — guna GUI atau PowerShell.</p>
+
+      <div class="step-list">
+        <div class="step">
+          <h3>Cara A — Guna Windows Features (GUI)</h3>
+          <p>Ini cara paling mudah untuk yang baru belajar.</p>
+          <ol>
+            <li>Buka <strong>Control Panel</strong> → <strong>Programs</strong> → <strong>Turn Windows features on or off</strong></li>
+            <li>ATAU tekan <kbd>Win</kbd> + <kbd>R</kbd>, taip <strong>optionalfeatures</strong>, tekan Enter</li>
+            <li>Dalam senarai, <strong>tanda</strong> dua item ini:
+              <ul>
+                <li><strong>Virtual Machine Platform</strong></li>
+                <li><strong>Windows Subsystem for Linux</strong></li>
+              </ul>
+            </li>
+            <li>Klik <strong>OK</strong></li>
+          </ol>
+          <!-- TODO: Tambah screenshot Windows Features -->
+          <div class="screenshot-placeholder">
+            <p>🖼️ Screenshot: Tetingkap Windows Features dengan "Virtual Machine Platform" dan "Windows Subsystem for Linux" ditanda</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>Cara B — Guna PowerShell (Alternatif)</h3>
+          <p>Buka <strong>PowerShell sebagai Administrator</strong> — klik kanan icon PowerShell, pilih "Run as Administrator". Kemudian salin dan jalankan command berikut SATU PERSATU:</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <pre><code>dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</code></pre>
+          </div>
+          <p>Command ni enable Windows Subsystem for Linux tanpa restart dulu.</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <pre><code>dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</code></pre>
+          </div>
+          <p>Command ni enable Virtual Machine Platform.</p>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon">💡</span>
+            <div class="callout__content">
+              <strong>Tip:</strong> Kalau anda guna Windows yang lebih baru (build 19041+), anda boleh guna command <code>wsl --install</code> di langkah 3 yang akan enable kedua-dua feature ni secara automatik. Tak perlu guna cara A atau B jika guna command tu.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Checkpoint:</strong> Lepas langkah ni, anda akan nampak mesej "The operation completed successfully" untuk setiap command. Jangan tutup PowerShell — kita akan guna dia dalam langkah seterusnya.
+        </div>
+      </div>
+    </section>
+
+    <section id="install-wsl">
+      <h2>3. Install WSL dengan Satu Command</h2>
+      <p>Sekarang, kita install WSL dan Linux distro (Ubuntu) serentak.</p>
+
+      <div class="step-list">
+        <div class="step">
+          <h3>Jalankan Command WSL Install</h3>
+          <p>Dalam PowerShell (yang masih dibuka sebagai Administrator), jalankan command ni:</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <pre><code>wsl --install</code></pre>
+          </div>
+          <p>Command ni akan:
+            <ul>
+              <li>Enable dua feature Windows yang diperlukan (kalau belum)</li>
+              <li>Muat turun dan install Linux kernel</li>
+              <li>Set WSL2 sebagai versi lalai</li>
+              <li>Install Ubuntu distro</li>
+            </ul>
+          </p>
+
+          <div class="callout callout--warning">
+            <span class="callout__icon">⚠️</span>
+            <div class="callout__content">
+              <strong>Amaran:</strong> Command <code>wsl --install</code> hanya tersedia pada Windows build 19041+ (Windows 10 version 2004+ dan semua Windows 11). Kalau anda guna build lama, guna cara manual di Langkah 2 dan kemudian install distro dari Microsoft Store atau guna <code>wsl --install -d Ubuntu</code>.
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>Semak Hasil Installasi</h3>
+          <p>Selepas selesai, anda boleh verify dengan command ni:</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <pre><code>wsl --status</code></pre>
+          </div>
+          <p>Command ni akan tunjuk status WSL — termasuk versi default dan kernel version.</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <pre><code>wsl -l -v</code></pre>
+          </div>
+          <p>Command ni tunjuk senarai distro yang telah diinstall dan versi WSL masing-masing.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Checkpoint:</strong> Kalau <code>wsl --status</code> tunjuk "Default Version: 2" dan ada distro Ubuntu dalam senarai, setup WSL dah berjaya!
+        </div>
+      </div>
+    </section>
+
+    <section id="restart">
+      <h2>4. Restart Komputer</h2>
+      <p>Lepas enable features dan install WSL, komputer anda <strong>perlu restart</strong> untuk proses selesai sepenuhnya.</p>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Amaran:</strong> Jangan skip restart. Tanpa restart, feature Virtual Machine Platform mungkin tidak aktif dan WSL2 tidak akan berfungsi dengan betul. Simpan semua kerja dulu sebelum restart.
+        </div>
+      </div>
+
+      <p>Lepas restart, anda boleh terus ke <a href="03-wsl-setup.html">Section 03 — WSL2 Setup</a> untuk mula guna Ubuntu.</p>
+    </section>
+
+    <section id="bios-virtualization">
+      <h2>5. Semak & Enable Virtualization dalam BIOS</h2>
+      <p>WSL2 perlukan ciri virtualisasi hardware yang disokong oleh processor komputer anda. Walaupun kebanyakan komputer moden sudah enable virtualization secara lalai, ada juga yang masih disabled.</p>
+
+      <div class="step-list">
+        <div class="step">
+          <h3>Semak Status Virtualization dalam Windows</h3>
+          <p>Sebelum masuk BIOS, semak dulu dari Windows:</p>
+          <ol>
+            <li>Tekan <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Esc</kbd> untuk buka <strong>Task Manager</strong></li>
+            <li>Pergi ke tab <strong>Performance</strong></li>
+            <li>Klik pada <strong>CPU</strong></li>
+            <li>Cari baris <strong>Virtualization</strong> — kalau tulis "Enabled", anda tak perlu buat apa-apa lagi</li>
+          </ol>
+          <!-- TODO: Tambah screenshot Task Manager CPU -->
+          <div class="screenshot-placeholder">
+            <p>🖼️ Screenshot: Task Manager → Performance → CPU — Virtualization: Enabled</p>
+          </div>
+
+          <div class="callout callout--success">
+            <span class="callout__icon">✅</span>
+            <div class="callout__content">
+              <strong>Checkpoint:</strong> Kalau Task Manager tunjuk "Virtualization: Enabled", terus ke <a href="#restart">Langkah 4 — Restart</a> atau ke section seterusnya. BIOS tak perlu diusik.
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>Enable Virtualization dalam BIOS (Jika Perlu)</h3>
+          <p>Kalau Task Manager tunjuk "Virtualization: Disabled", anda perlu enable kan dalam BIOS/UEFI. <strong>PERHATIAN:</strong> Cara masuk BIOS dan lokasi setting ni <strong>BERBEZA</strong> ikut jenama motherboard atau laptop anda.</p>
+
+          <p><strong>Pertama, tahu versi Windows anda:</strong> Guna <code>winver</code> (Langkah 1 di atas) untuk tahu sama ada Windows 10 atau 11 — lepas itu ikut path yang betul di bawah.</p>
+
+          <p><strong>Cara masuk BIOS (UEFI) — Windows 10:</strong></p>
+          <ol>
+            <li>Buka <strong>Settings</strong> → <strong>Update & Security</strong> → <strong>Recovery</strong></li>
+            <li>Di bawah "Advanced startup", klik <strong>Restart now</strong></li>
+            <li>Lepas restart: <strong>Troubleshoot</strong> → <strong>Advanced options</strong> → <strong>UEFI Firmware Settings</strong> → <strong>Restart</strong></li>
+          </ol>
+
+          <p><strong>Cara masuk BIOS (UEFI) — Windows 11:</strong></p>
+          <ol>
+            <li>Buka <strong>Settings</strong> → <strong>System</strong> → <strong>Recovery</strong></li>
+            <li>Di sebelah "Advanced startup", klik <strong>Restart now</strong></li>
+            <li>Lepas restart: <strong>Troubleshoot</strong> → <strong>Advanced options</strong> → <strong>UEFI Firmware Settings</strong> → <strong>Restart</strong></li>
+          </ol>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon">💡</span>
+            <div class="callout__content">
+              <strong>Tip:</strong> Tak jumpa path di atas? Guna search dalam Settings — taip "Recovery" atau "Advanced startup" untuk cari terus.
+            </div>
+          </div>
+
+          <p><strong>Cara alternatif (semua versi Windows):</strong> Tekan dan tahan <kbd>Shift</kbd> sambil klik <strong>Restart</strong> pada Start Menu. Lepas tu ikut: <strong>Troubleshoot</strong> → <strong>Advanced options</strong> → <strong>UEFI Firmware Settings</strong> → <strong>Restart</strong>.</p>
+
+          <p><strong>ATAU semasa komputer mula hidup</strong> (selepas restart biasa), tekan kekunci tertentu — biasanya <kbd>Del</kbd> (desktop), <kbd>F2</kbd> (laptop), atau <kbd>F10</kbd> (HP) — tapi ini berbeza ikut jenama.</p>
+
+          <p><strong>Cari setting virtualization — nama yang biasa digunakan:</strong></p>
+          <ul>
+            <li><strong>Intel:</strong> "Intel Virtualization Technology", "VT-x", "Vanderpool", atau "Virtualization"</li>
+            <li><strong>AMD:</strong> "SVM Mode", "Secure Virtual Machine", atau "AMD-V"</li>
+          </ul>
+
+          <p><strong>Lokasi bias (tapi TIDAK universal):</strong></p>
+          <ul>
+            <li>Advanced → CPU Configuration</li>
+            <li>Overclocking → CPU Features</li>
+            <li>Security → Virtualization</li>
+            <li>Configuration → Virtualization Technology</li>
+          </ul>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon">💡</span>
+            <div class="callout__content">
+              <strong>Tip:</strong> Menu BIOS berbeza ikut jenama. Guna panduan ni: <a href="https://support.microsoft.com/en-us/windows/enable-virtualization-on-windows-11-pcs" target="_blank" rel="noopener">Panduan rasmi Microsoft</a> atau cari "enable virtualization BIOS [jenama laptop/motherboard anda]" di Google — contoh: "enable virtualization BIOS ASUS ROG", "enable virtualization BIOS Dell Inspiron".
+            </div>
+          </div>
+
+          <div class="callout callout--warning">
+            <span class="callout__icon">⚠️</span>
+            <div class="callout__content">
+              <strong>Amaran:</strong> Berhati-hati dalam BIOS — jangan ubah setting lain yang anda tidak faham. Cukup cari dan enable virtualization sahaja, kemudian tekan <kbd>F10</kbd> (atau ikut arahan di skrin) untuk Save & Exit.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+      <p>Kalau langkah di atas tak berjalan seperti yang dijangka, cuba semak isu-isu berikut:</p>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>wsl --install gagal atau "command not found"</strong>
+          <p>Ini bermakna Windows build anda terlalu lama (bawah 19041). Guna <strong>Windows Update</strong> untuk update ke versi terkini, atau guna cara manual di Langkah 2 untuk enable features guna DISM.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>WSL installation incomplete atau error 0x8007007e</strong>
+          <p>Biasanya sebab virtualization belum dienable dalam BIOS. Semak Langkah 5 di atas untuk cara enable virtualization.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>Mesej "Please enable Virtual Machine Platform"</strong>
+          <p>Walaupun sudah enable, restart belum dilakukan. Restart komputer dan cuba lagi. Kalau masih bermasalah, rujuk <a href="08-troubleshooting.html">Troubleshooting penuh</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="../index.html" class="section-nav__prev">← Home</a>
+      <a href="02-istilah-asas.html" class="section-nav__next">02 Istilah Asas →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 03 WSL2 Setup</title>
+  <meta name="description" content="Selepas restart, setup akaun Ubuntu pertama kali, update package, dan verify WSL berjalan lancar.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">03</span> WSL2 — Setup</h1>
+      <p>Selepas restart, setup akaun Ubuntu, kemas kini pakej, dan verifikasi semuanya berjalan lancar.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Kandungan Section Ini</p>
+      <ol>
+        <li><a href="#setup-akaun">Setup Akaun Ubuntu (First-Time Setup)</a></li>
+        <li><a href="#update">Kemas Kini Pakej Ubuntu</a></li>
+        <li><a href="#verify">Verifikasi Pemasangan WSL</a></li>
+      </ol>
+    </div>
+
+    <section id="setup-akaun">
+      <h2>1. Setup Akaun Ubuntu (First-Time Setup)</h2>
+
+      <div class="step-list">
+        <div class="step">
+          <h3>Lancarkan Ubuntu</h3>
+          <p>Ada dua cara untuk buka Ubuntu dalam WSL buat kali pertama:</p>
+          <ul>
+            <li>Cari <strong>"Ubuntu"</strong> dalam Start Menu dan klik icon dia, ATAU</li>
+            <li>Buka <span class="tag-powershell">PowerShell</span> dan taip <code>wsl</code></li>
+          </ul>
+          <p>Pada kali pertama sahaja, Ubuntu akan mengambil beberapa minit untuk memasang dan mengkonfigurasi diri. Anda akan nampak mesej seperti "Installing, this may take a few minutes..." — ini normal, jangan tutup tetingkap.</p>
+        </div>
+
+        <div class="step">
+          <h3>Cipta Nama Pengguna & Kata Laluan</h3>
+          <p>Selepas proses selesai, Ubuntu akan meminta anda mencipta <strong>akaun UNIX</strong> (berasingan daripada akaun Windows anda). Anda akan nampak dua prompt:</p>
+          <ol>
+            <li><strong>Nama pengguna (username):</strong> Biasanya dipaparkan sebagai <code>Enter new UNIX username:</code> atau <code>Enter new username:</code>. Taip nama pilihan — guna huruf kecil sahaja, tanpa ruang. Contoh: <code>rafee</code>.</li>
+            <li><strong>Kata laluan (password):</strong> Seterusnya <code>New password:</code> — taip kata laluan. Ia tidak akan kelihatan semasa ditaip (tiada asterisk atau titik) — ini normal. Ulang sekali lagi di <code>Retype new password:</code> untuk pengesahan.</li>
+          </ol>
+
+          <div class="callout callout--warning">
+            <span class="callout__icon">⚠️</span>
+            <div class="callout__content">
+              <strong>Penting:</strong> Nama pengguna dan kata laluan ini adalah untuk <strong>akaun Linux dalam Ubuntu</strong>, BUKAN akaun Windows anda. Ingat username ini — anda akan gunakannya setiap kali buka terminal WSL. Kalau lupa password, anda kena reset dari PowerShell guna <code>wsl --user root</code>.
+            </div>
+          </div>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon">💡</span>
+            <div class="callout__content">
+              <strong>Tip:</strong> Nama pengguna UNIX boleh sama dengan username Windows anda (contoh: <code>rafee</code>) atau berbeza — terpulang. Tapi password UNIX dan password Windows adalah <strong>berasingan</strong> — menukar salah satu tidak akan menukar yang lain.
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>Checkpoint — Selesai Setup</h3>
+          <p>Selepas selesai, anda akan lihat prompt terminal yang menunjukkan username + hostname, contohnya:</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <span class="tag-wsl">WSL Ubuntu</span>
+            <pre><code>rafee@DESKTOP-ABC123:~$</code></pre>
+          </div>
+
+          <div class="callout callout--success">
+            <span class="callout__icon">✅</span>
+            <div class="callout__content">
+              <strong>Checkpoint:</strong> Kalau nampak prompt macam <code>namaanda@namakomputer:~$</code>, maknanya Ubuntu sudah sedia dan anda kini berada dalam terminal Linux. Hostname (selepas <code>@</code>) mungkin berbeza — ia adalah nama komputer Windows anda.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="update">
+      <h2>2. Kemas Kini Pakej Ubuntu</h2>
+
+      <div class="step-list">
+        <div class="step">
+          <h3>Kemas Kini Senarai Pakej</h3>
+          <p>Sebelum guna Ubuntu untuk apa-apa, biasakan diri untuk kemas kini senarai pakej dahulu. Command ni akan muat turun maklumat versi terkini semua pakej dari repositori Ubuntu.</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <span class="tag-wsl">WSL Ubuntu</span>
+            <pre><code>sudo apt update</code></pre>
+          </div>
+
+          <p>Masukkan kata laluan UNIX anda apabila diminta. Output akan menunjukkan senarai repositori yang sedang dikemas kini. Jika selesai tanpa ralat, anda sudah bersedia untuk langkah seterusnya.</p>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon">💡</span>
+            <div class="callout__content">
+              <strong>Tip:</strong> Kali pertama guna <code>sudo</code>, anda akan nampak mesej seperti "is not in the sudoers file" — TAPI ini hanya jika anda buka Ubuntu sebagai <code>root</code>. Jika anda setup akaun biasa (seperti langkah 1), <code>sudo</code> akan berfungsi terus dan hanya minta password.
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>Tingkatkan Semua Pakej</h3>
+          <p>Selepas senarai pakej dikemas kini, jalankan command ni untuk <strong>naik taraf</strong> semua pakej yang sudah lapuk kepada versi terkini.</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <span class="tag-wsl">WSL Ubuntu</span>
+            <pre><code>sudo apt upgrade -y</code></pre>
+          </div>
+
+          <p>Proses ini akan memuat turun dan memasang pakej yang lebih baru. Masa yang diperlukan bergantung pada jumlah pakej yang perlu dikemas kini dan kelajuan internet anda. Flag <code>-y</code> bermaksud "yes" — ia akan menjawab "Ya" secara automatik kepada sebarang pengesahan.</p>
+
+          <div class="callout callout--success">
+            <span class="callout__icon">✅</span>
+            <div class="callout__content">
+              <strong>Checkpoint:</strong> Lepas selesai, anda akan kembali ke prompt biasa tanpa sebarang ralat. Ini petanda Ubuntu sudah dikemas kini dan bersedia untuk kegunaan seterusnya.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="verify">
+      <h2>3. Verifikasi Pemasangan WSL</h2>
+
+      <div class="step-list">
+        <div class="step">
+          <h3>Senarai Distro dengan Versi WSL</h3>
+          <p>Untuk pastikan Ubuntu berjalan dengan WSL 2, jalankan command ni dalam <span class="tag-powershell">PowerShell</span> (bukan dalam WSL):</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <span class="tag-powershell">PowerShell</span>
+            <pre><code>wsl -l -v</code></pre>
+          </div>
+
+          <p>Command ni akan paparkan senarai distro yang dipasang, status, dan versi WSL dalam bentuk jadual dengan tiga lajur: <strong>NAME</strong> (nama distro), <strong>STATE</strong> (Running / Stopped), dan <strong>VERSION</strong> (1 atau 2).</p>
+
+          <p>Gantikan <code>-l</code> dengan <code>--list</code> dan <code>-v</code> dengan <code>--verbose</code> jika suka guna bentuk panjang: <code>wsl --list --verbose</code>.</p>
+
+          <div class="callout callout--success">
+            <span class="callout__icon">✅</span>
+            <div class="callout__content">
+              <strong>Checkpoint:</strong> Cari nama distro Ubuntu anda dalam output. Pastikan lajur <strong>VERSION</strong> menunjukkan angka <strong>2</strong>. Jika tunjuk 1, rujuk <code>wsl --set-version Ubuntu 2</code> untuk tukar. Jika tiada langsung distro dalam senarai, pemasangan mungkin tidak lengkap — cuba <code>wsl --install</code> semula.
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>Status Keseluruhan WSL</h3>
+          <p>Guna command ni untuk lihat gambaran penuh status WSL — termasuk versi lalai, tarikh kemaskini kernel, dan maklumat sistem:</p>
+
+          <div class="code-block">
+            <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+            <span class="tag-powershell">PowerShell</span>
+            <pre><code>wsl --status</code></pre>
+          </div>
+
+          <p>Output akan menunjukkan maklumat seperti versi lalai WSL (sepatutnya 2) dan status kernel Linux. Tiada "lulus/gagal" yang jelas — cuma pastikan tiada mesej ralat dalam output.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Nota:</strong> Output sebenar bagi <code>wsl -l -v</code> dan <code>wsl --status</code> mungkin kelihatan sedikit berbeza bergantung pada versi WSL dan Windows yang digunakan. Format asas (tiga lajur untuk <code>-l -v</code>) adalah konsisten, tetapi susun atur dan maklumat tambahan mungkin berubah. Yang penting: distro Ubuntu wujud, State = Running (atau Stopped — asalkan wujud), dan Version = 2.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>wsl: command not found</strong>
+          <p>Ini bermakna WSL belum dipasang atau enable. Rujuk <a href="01-prasyarat.html">Section 01 — Prasyarat</a> untuk langkah enable dan install WSL. Pastikan anda dah restart lepas enable features.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>WSL 2 requires an update — kernel update needed</strong>
+          <p>Kernel WSL 2 perlu dikemas kini secara manual untuk kali pertama. Muat turun dan jalankan <a href="https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package" target="_blank" rel="noopener">pakej kemas kini kernel WSL2 dari Microsoft</a>. Selepas itu, set WSL 2 sebagai lalai: <code>wsl --set-default-version 2</code>.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>sudo: command not found atau dpkg: error processing package</strong>
+          <p>Ini jarang berlaku, tapi jika <code>apt update</code> gagal dengan ralat repositori, Cuba jalankan <code>sudo apt update --fix-missing</code> atau restart WSL dengan <code>wsl --shutdown</code> dan buka semula. Rujuk <a href="08-troubleshooting.html">Section 08 — Troubleshooting penuh</a> untuk isu lain.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="02-istilah-asas.html" class="section-nav__prev">← 02 Istilah Asas</a>
+      <a href="04-wsl-manage.html" class="section-nav__next">04 WSL2 Pengurusan →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

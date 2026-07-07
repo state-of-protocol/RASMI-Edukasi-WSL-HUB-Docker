@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 09 Q&A</title>
+  <meta name="description" content="Soalan lazim: kenapa guna Docker Engine berbanding Docker Desktop, apa jadi container masa laptop dimatikan, dan bagaimana port forwarding WSL2 berfungsi.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">09</span> Q&A</h1>
+      <p>Fahami logik pengendalian sistem dan struktur hos bagi pemantapan teori.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Soalan dalam Section Ini</p>
+      <ol>
+        <li><a href="#q1">Kenapa guna Docker Engine dalam WSL, bukan Docker Desktop?</a></li>
+        <li><a href="#q2">Adakah container terpadam bila tutup laptop?</a></li>
+        <li><a href="#q3">Macam mana Windows boleh akses localhost:8080 container?</a></li>
+      </ol>
+    </div>
+
+    <section id="q1">
+      <h2>1. Mengapa pasang Docker dalam WSL berbanding guna Docker Desktop?</h2>
+      <p>Memasang Docker Engine terus di dalam Ubuntu WSL jauh lebih ringan kerana ia tidak memuatkan aplikasi antara muka (GUI) Windows yang berat seperti Docker Desktop. Ini menjimatkan penggunaan RAM sistem laptop secara drastik serta memberikan kelajuan prestasi penulisan disk I/O yang hampir sama seperti pelayan Linux sebenar.</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Ringkasan:</strong> Docker Engine dalam WSL = ringan, jimat RAM, prestasi tinggi. Docker Desktop = senang guna (ada GUI) tapi berat — lebih sesuai untuk pengguna yang tak selesa dengan command line.
+        </div>
+      </div>
+    </section>
+
+    <section id="q2">
+      <h2>2. Adakah container terpadam automatik bila tutup terminal atau matikan laptop?</h2>
+      <p><strong>Tidak.</strong> Container hanya akan bertukar status kepada "Stopped" (ditutup). Ia tidak akan dipadam. Apabila anda membuka semula terminal dan menghidupkan servis Docker daemon, anda boleh menjalankan command berikut untuk menyambung semula container yang telah dihentikan:</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <pre><code>docker start nama-container</code></pre>
+      </div>
+
+      <p>Data dalam container juga kekal — ia tidak hilang semasa ditutup. Tapi <strong>data hanya akan kekal selagi container tidak dipadam</strong>. Kalau anda padam container dengan <code>docker rm</code>, data di dalamnya akan hilang (kecuali jika disimpan dalam volume berasingan).</p>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Checkpoint:</strong> Ingat: <code>docker stop</code> = tidurkan container (boleh hidup balik). <code>docker rm</code> = padam terus container (data hilang).
+        </div>
+      </div>
+    </section>
+
+    <section id="q3">
+      <h2>3. Macam mana Windows boleh akses localhost:8080 sedangkan container dalam Linux?</h2>
+      <p>Ini dibantu oleh ciri <strong>auto port forwarding</strong> (pemetaan port automatik) yang dibina dalam WSL2. Sistem WSL2 secara automatik memetakan sebarang port rangkaian pelayan yang diaktifkan di dalam Linux terus ke antara muka rangkaian localhost Windows hos anda.</p>
+
+      <p>Maksudnya: bila container berjalan dalam WSL dan dengar port 80, WSL2 akan sambungkan port tu ke port yang sama pada Windows. Jadi bila anda buka <code>http://localhost:8080</code> (atau port yang anda tetapkan dengan <code>-p</code>), Windows akan hantar trafik terus ke container dalam WSL — tanpa sebarang konfigurasi tambahan.</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Analogi:</strong> WSL2 macam <strong>jambatan automatik</strong> antara rumah Windows dan rumah Linux. Bila ada trafik di port tertentu, jambatan ni buka laluan tanpa anda perlu bangun dan buka pintu manual.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>Container "Stopped" tapi tak boleh start balik?</strong>
+          <p>Pertama, pastikan Docker daemon sedang berjalan. Jalankan <code>sudo service docker status</code> untuk semak. Kalau tak jalan, <code>sudo service docker start</code> dulu. Lepas tu baru <code>docker start nama-container</code>.</p>
+           <p>Rujuk <a href="08-troubleshooting.html">Troubleshooting penuh</a> untuk isu lain.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="08-troubleshooting.html" class="section-nav__prev">← 08 Troubleshooting</a>
+      <a href="10-quick-reference.html" class="section-nav__next">10 Rujukan Pantas →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

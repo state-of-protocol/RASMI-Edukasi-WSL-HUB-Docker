@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 10 Rujukan Pantas</title>
+  <meta name="description" content="Cheat sheet semua command penting WSL dan Docker — wsl --status, wsl --shutdown, docker service, docker ps, docker system prune, dan banyak lagi.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">10</span> Rujukan Pantas (Cheat Sheet)</h1>
+      <p>Satu halaman ringkas yang menggabungkan semua sintaks harian penting. Pastikan anda lihat label persekitaran <span class="tag-powershell">PowerShell</span> / <span class="tag-wsl">WSL Ubuntu</span> sebelum menyalin command.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Kategori Command</p>
+      <ol>
+        <li><a href="#wsl-manage">Kawalan Hos Windows & Sesi WSL</a></li>
+        <li><a href="#docker-daemon">Pengendalian Daemon & Servis Docker</a></li>
+        <li><a href="#container-ops">Pengurusan Harian Kontena</a></li>
+        <li><a href="#cleanup">Pembersihan Storan & Sisa Sistem</a></li>
+      </ol>
+    </div>
+
+    <section id="wsl-manage">
+      <h2>🖥️ Kawalan Hos Windows & Sesi WSL</h2>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-powershell">PowerShell</span>
+        <pre><code>wsl --status</code></pre>
+      </div>
+      <p>Semak status pemasangan & versi WSL — termasuk default version dan kernel version.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-powershell">PowerShell</span>
+        <pre><code>wsl -d Ubuntu</code></pre>
+      </div>
+      <p>Log masuk ke distro Ubuntu lalai. Gantikan <code>Ubuntu</code> dengan nama distro lain kalau ada.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-powershell">PowerShell</span>
+        <pre><code>wsl --shutdown</code></pre>
+      </div>
+      <p>Matikan semua sesi Linux serentak untuk bersihkan RAM. Sangat berguna bila nak jimat memori tanpa restart laptop.</p>
+    </section>
+
+    <section id="docker-daemon">
+      <h2>🐳 Pengendalian Daemon & Servis Docker</h2>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>sudo service docker start</code></pre>
+      </div>
+      <p>Aktifkan servis latar belakang Docker Engine. Wajib dijalankan selepas setiap restart laptop sebelum guna Docker.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>sudo service docker status</code></pre>
+      </div>
+      <p>Semak sama ada Docker daemon sedang berjalan atau tidak. Output akan tunjuk "docker is running" atau "not running".</p>
+    </section>
+
+    <section id="container-ops">
+      <h2>📦 Pengurusan Harian Kontena</h2>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>docker run -d -p 8080:80 --name web-node nginx</code></pre>
+      </div>
+      <p>Luncurkan pelayan Nginx baharu di latar belakang, port 8080. <code>-d</code> = detached (latar belakang), <code>-p 8080:80</code> = port 8080 komputer → port 80 container, <code>--name web-node</code> = nama container.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>docker ps</code></pre>
+      </div>
+      <p>Lihat senarai container yang sedang AKTIF sahaja. Tak nampak container yang dah dihentikan.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>docker ps -a</code></pre>
+      </div>
+      <p>Lihat SEMUA container — termasuk yang aktif dan yang telah dihentikan. Berguna untuk cari container lama yang terlupa.</p>
+    </section>
+
+    <section id="cleanup">
+      <h2>🧹 Pembersihan Storan & Sisa Sistem</h2>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>docker stop web-node</code></pre>
+      </div>
+      <p>Hentikan container secara selamat. Container masih boleh dihidupkan semula dengan <code>docker start web-node</code>.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>docker rm -f web-node</code></pre>
+      </div>
+      <p>Padam container secara paksa. <code>-f</code> = force — padam walaupun container masih berjalan. Data dalam container akan hilang (kecuali disimpan dalam volume).</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>docker system prune -a --volumes -f</code></pre>
+      </div>
+      <p>Padam total semua cache, imej, volume, dan rangkaian yang tidak aktif. Sangat berkesan untuk bebaskan ruang disk NVMe. <code>-a</code> = semua imej tak guna, <code>--volumes</code> = padam juga volume terbiar, <code>-f</code> = force (tanpa confirm).</p>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>Command docker tak jumpa?</strong>
+           <p>Pastikan Docker daemon sedang berjalan: <code>sudo service docker start</code>. Kalau masih tak jumpa, mungkin Docker belum dipasang — rujuk <a href="05-docker-setup.html">Section 05 — Docker Setup</a>.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>Permission denied walaupun dah guna sudo?</strong>
+           <p>Kalau anda perlu guna <code>sudo</code> untuk setiap command docker, ini maknanya user anda belum ditambah ke group docker. Rujuk <a href="08-troubleshooting.html">Troubleshooting penuh</a> untuk penyelesaian.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="09-qa.html" class="section-nav__prev">← 09 Q&A</a>
+      <a href="../index.html" class="section-nav__next">🏠 Home →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 06 Docker Urus Container</title>
+  <meta name="description" content="Cara menghidupkan servis Docker latar belakang serta memulakan container pelayan web baharu.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">06</span> Docker — Urus Container</h1>
+      <p>Cara menghidupkan servis Docker latar belakang serta memulakan container pelayan web baharu.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Kandungan Section Ini</p>
+      <ol>
+        <li><a href="#daemon">Hidupkan Servis Daemon Docker</a></li>
+        <li><a href="#lancarkan">Luncurkan Server Ujian Nginx</a></li>
+        <li><a href="#semak">Semak Senarai Container Yang Aktif</a></li>
+      </ol>
+    </div>
+
+    <section id="daemon">
+      <h2>1. Hidupkan Servis Daemon Docker</h2>
+      <p>Selepas reboot atau kali pertama guna Docker, daemon Docker perlu dihidupkan secara manual. Servis ini berjalan di latar belakang dan menguruskan semua container.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>sudo service docker start</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Tip:</strong> Lepas jalan command ni, verify dengan <code>sudo service docker status</code>. Kalau output <code>docker is running</code>, daemon dah aktif dan sedia guna.
+        </div>
+      </div>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Wajib setiap kali reboot:</strong> Docker daemon tak di-set untuk auto-start dalam WSL secara lalai. Jadi selepas setiap restart Windows atau WSL, ingat jalankan <code>sudo service docker start</code> dulu sebelum guna mana-mana command Docker.
+        </div>
+      </div>
+    </section>
+
+    <section id="lancarkan">
+      <h2>2. Luncurkan Server Ujian Nginx</h2>
+      <p>Guna command ni untuk melancarkan container Nginx — pelayan web ringan — dan pasangkannya ke port 8080 komputer anda. Container akan berjalan di latar belakang.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>docker run -d -p 8080:80 --name web-node nginx</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Apa flags ni buat?</strong>
+          <ul style="margin-top: var(--space-2);">
+            <li><code>-d</code> — detached, jalan di latar belakang (terminal bebas)</li>
+            <li><code>-p 8080:80</code> — port 8080 komputer → port 80 dalam container</li>
+            <li><code>--name web-node</code> — nama container, senang rujuk nanti</li>
+            <li><code>nginx</code> — nama imej yang nak digunakan</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout--success">
+        <span class="callout__icon">✅</span>
+        <div class="callout__content">
+          <strong>Checkpoint:</strong> Buka browser dan pergi ke <code>http://localhost:8080</code>. Kalau nampak halaman "Welcome to nginx", container dah berjalan dengan jayanya!
+        </div>
+      </div>
+    </section>
+
+    <section id="semak">
+      <h2>3. Semak Senarai Container Yang Aktif</h2>
+      <p>Untuk lihat container mana yang sedang berjalan sekarang, guna command ni. Ia hanya menunjukkan container yang aktif — container yang dihentikan tak akan muncul.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>docker ps</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Nak nampak semua container (termasuk yang berhenti)?</strong> Guna <code>docker ps -a</code>. Flag <code>-a</code> bermaksud "all" — ia akan senaraikan semua container, termasuk yang dah stop.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>docker: Cannot connect to the Docker daemon</strong>
+          <p>Daemon Docker belum hidup. Jalankan <code>sudo service docker start</code> dan cuba semula.</p>
+          <p>Rujuk <a href="08-troubleshooting.html">Section 08 — Troubleshooting penuh</a> untuk isu lain.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>docker: Error response from daemon — port 8080 already in use</strong>
+          <p>Port 8080 dah digunakan oleh container atau aplikasi lain. Tukar port: guna <code>-p 8081:80</code> dan cuba semula.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>docker: Error response from daemon — Conflict, container name "/web-node" already exists</strong>
+          <p>Container dengan nama <code>web-node</code> dah wujud. Padam dulu: <code>docker rm -f web-node</code>, atau guna nama lain: <code>--name web-node-baru</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="05-docker-setup.html" class="section-nav__prev">← 05 Docker Pemasangan</a>
+      <a href="07-docker-cleanup.html" class="section-nav__next">07 Pembersihan →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>

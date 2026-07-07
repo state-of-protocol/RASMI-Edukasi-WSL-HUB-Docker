@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edukasi WSL Hub & Docker — 05 Docker Pemasangan</title>
+  <meta name="description" content="Langkah rasmi memasang Docker Engine di Ubuntu WSL2 tanpa memerlukan aplikasi berat Windows Docker Desktop.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1><span class="section-card__number">05</span> Docker — Pemasangan</h1>
+      <p>Langkah rasmi memasang Docker Engine di Ubuntu WSL2 tanpa memerlukan aplikasi berat Windows Docker Desktop.</p>
+    </header>
+
+    <div class="toc">
+      <p class="toc__title">📋 Kandungan Section Ini</p>
+      <ol>
+        <li><a href="#repositori">Pemasangan Repositori & Enjin Docker</a></li>
+        <li><a href="#kebenaran">Kebenaran Akses Bukan-Root</a></li>
+      </ol>
+    </div>
+
+    <section id="repositori">
+      <h2>1. Pemasangan Repositori & Enjin Docker</h2>
+      <p>Ikut langkah ni untuk setup repositori rasmi Docker dan pasang enjin Docker dalam persekitaran WSL Ubuntu. Semua command ni dijalankan dalam terminal WSL (Ubuntu).</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>sudo apt update && sudo apt upgrade -y
+sudo apt install -y ca-certificates curl gnupg lsb-release
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Apa script ni buat?</strong>
+          <ol style="margin-top: var(--space-2);">
+            <li><code>apt update && apt upgrade</code> — pastikan pakej Ubuntu terkini</li>
+            <li><code>ca-certificates curl gnupg lsb-release</code> — alatan asas untuk muat turun GPG key</li>
+            <li><code>mkdir -p /etc/apt/keyrings</code> — direktori untuk keyring Docker</li>
+            <li><code>curl ... | gpg --dearmor</code> — muat turun dan simpan GPG key rasmi Docker</li>
+            <li><code>echo ... | tee</code> — tambah repositori Docker ke senarai apt</li>
+            <li><code>apt update</code> — refresh senarai pakej dengan repositori baru</li>
+            <li><code>apt install docker-ce ...</code> — pasang enjin Docker dan plugin</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="kebenaran">
+      <h2>2. Kebenaran Akses Bukan-Root (Tanpa Sudo)</h2>
+      <p>Selepas selesai pemasangan, beri kebenaran kepada user biasa (bukan root) untuk guna command Docker tanpa perlu taip <code>sudo</code> setiap kali.</p>
+
+      <div class="code-block">
+        <button class="code-block__copy" onclick="copyCode(this)" aria-label="Salin kod">📋 Copy</button>
+        <span class="tag-wsl">WSL Ubuntu</span>
+        <pre><code>sudo usermod -aG docker $USER</code></pre>
+      </div>
+
+      <div class="callout callout--warning">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__content">
+          <strong>Penting:</strong> Selepas jalankan command ni, <strong>log out dan log in semula</strong> atau restart WSL terminal untuk group baru berkuat kuasa. Kalau tak, anda akan nampak ralat <code>permission denied</code> walaupun dah tambah user ke group docker.
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__icon">💡</span>
+        <div class="callout__content">
+          <strong>Verify:</strong> Lepas restart terminal, jalan <code>docker ps</code> tanpa <code>sudo</code>. Kalau output senarai container (mungkin kosong) tanpa ralat, maknanya setup berjaya!
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>gpg: cannot open '/etc/apt/keyrings/docker.gpg': Permission denied</strong>
+          <p>Pastikan anda guna <code>sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg</code>. Kalau masih gagal, cuba buat direktori dulu: <code>sudo mkdir -p /etc/apt/keyrings</code>.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__icon">❌</span>
+        <div class="callout__content">
+          <strong>docker: permission denied walaupun dah guna sudo usermod</strong>
+          <p>Kumpulan <code>docker</code> hanya akan berkuat kuasa untuk sesi shell baru. Tutup terminal WSL dan buka semula. Atau jalan <code>newgrp docker</code> untuk aktifkan dalam sesi semasa.</p>
+          <p>Rujuk <a href="08-troubleshooting.html">Section 08 — Troubleshooting penuh</a> untuk isu lain.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="04-wsl-manage.html" class="section-nav__prev">← 04 WSL2 Pengurusan</a>
+      <a href="06-docker-manage.html" class="section-nav__next">06 Urus Container →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Edukasi WSL Hub & Docker. Dibina untuk pemula, oleh pemula.</p>
+    <p><a href="10-quick-reference.html">Rujukan Pantas</a> — <a href="09-qa.html">Q&A</a></p>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+</body>
+</html>
